@@ -1,0 +1,123 @@
+<!Doctype html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">	
+	<title></title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="js/swiper.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/swiper.min.css">
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/catalog.css">
+	<script type="text/javascript">
+		$(function(){
+			// nav.menu ul메뉴 보이기
+			$('header nav.menu .menu_btn').click(function(event){
+				event.preventDefault();
+				$(this).next('ul').toggleClass('on')
+			})
+			// nav.menu ul li a에 scroll 무빙 작업
+			$('nav.menu ul li a').click(function(event){
+				event.preventDefault();
+				$('nav.menu ul').removeClass('on')
+				var thisA = $(this).attr('href')
+				var thisdiv = $(thisA).offset().top;
+				$('html,body').animate({
+					scrollTop : thisdiv-70
+				},800)
+
+			})
+			
+
+			// swiperslide 설정
+			var swiper = new Swiper('.swiper-container', {
+	        pagination: '.swiper-pagination',
+	        paginationClickable: true,
+	        direction: 'horizontal',
+		    })
+		    			
+				
+	})
+	</script>
+
+</head>
+<body>
+<header class="clearfix">
+	<div class="logo underline">
+		<a href="index.html" class="gray fontq">Coincidence</a>
+	</div>
+
+	<nav class="menu">
+		<div class="menu_btn right"><img src="images/hamburg2.png" alt=""></div>
+		<ul>
+			<li><a href="#catalog">catalog</a></li>
+			<li><a href="#about">about</a></li>
+			<li><a href="#product">product</a></li>
+			<li><a href="#store">store</a></li>
+			<li><a href="#contact">contact</a></li>
+		</ul>
+	</nav>
+</header>
+
+<div class="section_wrap">
+	<div id="catalog">
+		<div class="title">
+			<h3 class="gray light">2016</h3>
+			<h3 class="gray light">catalog</h3>		
+		</div><!-- title -->
+		
+	    
+	    <div class="swiper-container">
+	        <div class="swiper-wrapper">
+
+	            <div class="swiper-slide">
+		            <img src="images/id1_bg_3.jpg" alt="">
+		            <!-- Add Pagination  -->
+			        <div class="swiper-pagination"></div>
+		            <div class="descript">
+		            	<h2>round table</h2><span>선명한 색감과 아름다운 마블링의 라운딩 테이블과 미니 스툴</span>
+		            	<p>Paying homage to the sweeping lines of midcentury furnishings,our table is a study in simplicity.<br/>	Defined by its balanced proportions and arching, sculptural curves, our interpretation pairs a cast metal pedestal base with a bullnose marble top.</p>
+		            </div>
+		            <div class="images round">
+		            	<div class="left">
+		            		<img src="images/catalog_rou_1.jpg" alt="">
+		            	</div>
+		            	<div class="right">
+		            		<img src="images/catalog_rou_2.gif" alt="">
+		            	</div>
+		            </div><!-- images round -->
+	            </div><!-- swiper-slide -->
+
+	            <div class="swiper-slide">
+		            <a href="#"><img src="images/id1_bg_2.jpg" alt=""></a>
+		            <!-- Add Pagination  -->
+			        <div class="swiper-pagination"></div>
+		            <div class="descript">
+		            	<h2>rectangle table</h2><span>부드러운 마블링과 깔끔한 실루엣의 직사각형 프레임 테이블</span>
+		            	<p>Paying homage to the sweeping lines of midcentury furnishings,our table is a study in simplicity.<Br/>Defined by its balanced proportions and arching, sculptural curves, our interpretation pairs a cast metal pedestal base with a bullnose marble top.</p>
+		            </div>
+		            <div class="images rec">
+		            	<div class="left">
+		            		<img src="images/catalog_rec_1.jpg" alt="">
+		            	</div>
+		            	<div class="right">
+		            		<img src="images/catalog_rec_2.jpg" alt="">
+		            	</div>
+		            </div><!-- images round -->
+	            </div><!-- swiper-slide -->
+	        </div><!-- swiper-wrapper -->
+	    </div><!-- swiper-container -->
+	</div><!-- # catalog -->
+</div> <!-- section_wrap -->
+
+<footer>
+	<hr/>
+		<p class="fontq light">2017&copy;Coincidence All rights reserved</p>
+	<hr/>
+</footer>
+</body>
+</html>

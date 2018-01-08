@@ -1,0 +1,562 @@
+<!Doctype html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">	
+	<title></title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="js/swiper.min.js"></script>
+	<script src="js/jquery.filer.min.js" type="text/javascript"></script>
+
+	<link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/earlyaccess/notosanskr.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="css/swiper.min.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery.filer.css">
+	<link rel="stylesheet" type="text/css" href="css/themes/jquery.filer-dragdropbox-theme.css">
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<script type="text/javascript">
+		$(function(){
+			// nav.menu ul메뉴 보이기
+			$('header nav.menu .menu_btn').click(function(event){
+				event.preventDefault();
+				$(this).next('ul').toggleClass('on')
+			})
+			// nav.menu ul li a에 scroll 무빙 작업
+			$('nav.menu ul li a').click(function(event){
+				event.preventDefault();
+				$('nav.menu ul').removeClass('on')
+				var thisA = $(this).attr('href')
+				var thisdiv = $(thisA).offset().top;
+				$('html,body').animate({
+					scrollTop : thisdiv-70
+				},800)
+
+			})
+			
+			// nav.bullets a에 hover시 해당 h1 보이기
+			$('nav.bullets ul li a').mouseenter(function(){
+				$(this).prev('h1').show()
+			})
+			$('nav.bullets ul li a').mouseleave(function(){
+				$(this).prev('h1').hide()
+			})
+
+			// nav.bullets a에 active 작업 / scroll 무빙 작업
+			$('nav.bullets ul li a').click(function(event){
+				event.preventDefault();
+				$('nav.bullets ul li a').removeClass('active')
+				$(this).addClass('active')
+
+				// href값이랑  id 값 일치시키기
+				var target = $(this).attr('href')
+				
+				var targetPos = $(target).offset().top;
+				$('html,body').animate({
+					scrollTop : targetPos-70/*+'px'*/
+				},800)
+			})
+
+			// swiperslide 설정
+			var swiper = new Swiper('.swiper-container', {
+	        pagination: '.swiper-pagination',
+	        paginationClickable: true,
+	        direction: 'horizontal',
+            autoplay: 3500,
+	        autoplayDisableOnInteraction: false
+		    })
+
+			// .tabcontent 안의 각각 ul의 너비설정
+			$('#Main>div.tabcontent ul').show(function(){
+				$(this).css('width',$(this).children('li').outerWidth()*$(this).children('li').size()+($(this).children('li').size()*30))
+			})
+
+			// ul.tab클릭시 가운데 #Main 띄우기.
+		    $('body').append('<div id="Black"></div><div id="Main"></div>')
+				// append = 선택된 요소의 맨 뒤에 콘텐츠를 추가.
+			$('ul.tab li a').click(function(event){
+				event.preventDefault();
+				$('#Black').show();
+				$('#Main').show().children('ul').show();
+			})
+
+			$('#Black').click(function(){
+				$('#Black,#Main').hide();
+			})
+		    
+
+		    $('div.content ul.storelist li').click(function(event){
+		    	event.preventDefault();
+
+		    	// 컨텐츠마다 매장 이미지 다르게나옴
+				var swapImg = $(this).children('a').attr('href')
+				$('#largeImg').attr('src',swapImg)
+
+				// div.view 나오기 + 컨텐츠별 주소 다르게 나옴
+				$('div.content div#view').addClass('on');
+				var i = $(this).index();
+				$('div.address>div').eq(i).addClass('on').siblings().removeClass('on')	
+			    
+			})
+				// 닫기 버튼 누르면 view 사라짐
+			    $('div.content div#view p#close').click(function(){
+			    	$(this).parent('div#view').removeClass('on')
+		    })
+
+			    // input.file drag&drop			 
+				$("#filer_input2").filer({
+		limit: null,
+		maxSize: null,
+		extensions: null,
+		changeInput: '<div class="jFiler-input-dragDrop"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-cloud-up-o"></i></div><div class="jFiler-input-text"><h3>+ Drag&Drop Files</h3> <span style="display:inline-block; margin: 15px 0">파일을 드래그해서 이곳에 추가해보세요</span></div><a class="jFiler-input-choose-btn black">파일 찾기</a></div></div>',
+		showThumbs: true,
+		theme: "dragdropbox",
+		templates: {
+			box: '<ul class="jFiler-items-list jFiler-items-grid"></ul>',
+			item: '<li class="jFiler-item">\
+						<div class="jFiler-item-container">\
+							<div class="jFiler-item-inner">\
+								<div class="jFiler-item-thumb">\
+									<div class="jFiler-item-status"></div>\
+									<div class="jFiler-item-thumb-overlay">\
+										<div class="jFiler-item-info">\
+											<div style="display:table-cell;vertical-align: middle;">\
+												<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name}}</b></span>\
+												<span class="jFiler-item-others">{{fi-size2}}</span>\
+											</div>\
+										</div>\
+									</div>\
+									{{fi-image}}\
+								</div>\
+								<div class="jFiler-item-assets jFiler-row">\
+									<ul class="list-inline pull-left">\
+										<li>{{fi-progressBar}}</li>\
+									</ul>\
+									<ul class="list-inline pull-right">\
+										<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
+									</ul>\
+								</div>\
+							</div>\
+						</div>\
+					</li>',
+			itemAppend: '<li class="jFiler-item">\
+							<div class="jFiler-item-container">\
+								<div class="jFiler-item-inner">\
+									<div class="jFiler-item-thumb">\
+										<div class="jFiler-item-status"></div>\
+										<div class="jFiler-item-thumb-overlay">\
+											<div class="jFiler-item-info">\
+												<div style="display:table-cell;vertical-align: middle;">\
+													<span class="jFiler-item-title"><b title="{{fi-name}}">{{fi-name}}</b></span>\
+													<span class="jFiler-item-others">{{fi-size2}}</span>\
+												</div>\
+											</div>\
+										</div>\
+										{{fi-image}}\
+									</div>\
+									<div class="jFiler-item-assets jFiler-row">\
+										<ul class="list-inline pull-left">\
+											<li><span class="jFiler-item-others">{{fi-icon}}</span></li>\
+										</ul>\
+										<ul class="list-inline pull-right">\
+											<li><a class="icon-jfi-trash jFiler-item-trash-action"></a></li>\
+										</ul>\
+									</div>\
+								</div>\
+							</div>\
+						</li>',
+			progressBar: '<div class="bar"></div>',
+			itemAppendToEnd: false,
+			canvasImage: true,
+			removeConfirmation: true,
+			_selectors: {
+				list: '.jFiler-items-list',
+				item: '.jFiler-item',
+				progressBar: '.bar',
+				remove: '.jFiler-item-trash-action'
+			}
+		},
+		dragDrop: {
+			dragEnter: null,
+			dragLeave: null,
+			drop: null,
+			dragContainer: null,
+		},
+		uploadFile: {
+			url: "./php/ajax_upload_file.php",
+			data: null,
+			type: 'POST',
+			enctype: 'multipart/form-data',
+			synchron: true,
+			beforeSend: function(){},
+			success: function(data, itemEl, listEl, boxEl, newInputEl, inputEl, id){
+				var parent = itemEl.find(".jFiler-jProgressBar").parent(),
+					new_file_name = JSON.parse(data),
+					filerKit = inputEl.prop("jFiler");
+
+        		filerKit.files_list[id].name = new_file_name;
+
+				itemEl.find(".jFiler-jProgressBar").fadeOut("slow", function(){
+					$("<div class=\"jFiler-item-others text-success\"><i class=\"icon-jfi-check-circle\"></i> Success</div>").hide().appendTo(parent).fadeIn("slow");
+				});
+			},
+			error: function(el){
+				var parent = el.find(".jFiler-jProgressBar").parent();
+				el.find(".jFiler-jProgressBar").fadeOut("slow", function(){
+					$("<div class=\"jFiler-item-others text-error\"><i class=\"icon-jfi-minus-circle\"></i> Error</div>").hide().appendTo(parent).fadeIn("slow");
+				});
+			},
+			statusCode: null,
+			onProgress: null,
+			onComplete: null
+		},
+		files: null,
+		addMore: false,
+		allowDuplicates: true,
+		clipBoardPaste: true,
+		excludeName: null,
+		beforeRender: null,
+		afterRender: null,
+		beforeShow: null,
+		beforeSelect: null,
+		onSelect: null,
+		afterShow: null,
+		onRemove: function(itemEl, file, id, listEl, boxEl, newInputEl, inputEl){
+			var filerKit = inputEl.prop("jFiler"),
+		        file_name = filerKit.files_list[id].name;
+
+		    $.post('./php/ajax_remove_file.php', {file: file_name});
+		},
+		onEmpty: null,
+		options: null,
+		dialogs: {
+			alert: function(text) {
+				return alert(text);
+			},
+			confirm: function (text, callback) {
+				confirm(text) ? callback() : null;
+			}
+		},
+		captions: {
+			button: "Choose Files",
+			feedback: "Choose files To Upload",
+			feedback2: "files were chosen",
+			drop: "Drop file here to Upload",
+			removeConfirmation: "Are you sure you want to remove this file?",
+			errors: {
+				filesLimit: "Only {{fi-limit}} files are allowed to be uploaded.",
+				filesType: "Only Images are allowed to be uploaded.",
+				filesSize: "{{fi-name}} is too large! Please upload file up to {{fi-maxSize}} MB.",
+				filesSizeAll: "Files you've choosed are too large! Please upload files up to {{fi-maxSize}} MB."
+			}
+		}
+	});
+				
+				
+			})
+	</script>
+
+</head>
+<body>
+<header class="clearfix">
+	<div class="logo underline"><a href="#" class="gray fontq">Coincidence</a></div>
+
+	 <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+
+	<nav class="menu">
+		<div class="menu_btn right"><img src="images/hamburg2.png" alt=""></div>
+		<ul>
+			<li><a href="#catalog">catalog</a></li>
+			<li><a href="#about">about</a></li>
+			<li><a href="#product">product</a></li>
+			<li><a href="#store">store</a></li>
+			<li><a href="#contact">contact</a></li>
+		</ul>
+	</nav>
+</header>
+
+<div class="section_wrap">
+
+	<nav class="bullets">
+		<ul>
+			<li>
+				<h1>catalog</h1><a class="catalog" href="#catalog">카달로그</a>
+			</li>
+			<li>
+				<h1>about</h1><a class="about" href="#about">회사소개</a>
+			</li>
+			<li>
+				<h1>product</h1><a class="product" href="#product">제품소개</a>
+			</li>
+			<li>
+				<h1>store</h1><a class="store" href="#store">매장안내</a>
+			</li>
+			<li>
+				<h1>contact</h1><a class="contact" href="#contact">문의하기</a>
+			</li>
+		</ul>
+	</nav><!-- nav.bullets (slide buttons) -->
+
+	<div id="catalog">
+		<div class="title">
+			<h3 class="white light">2016</h3>
+			<h1 class="white">
+				<a href="catalog.html" class="white light fontq">Coincidence</a>
+				<span>catalog</span>
+			</h1>
+		</div><!-- title -->
+		<p class="white">Coinci-Dence<span class="upper">furniture</span></p>
+	    
+	    <div class="swiper-container">
+	        <div class="swiper-wrapper">
+	            <div class="swiper-slide"><a href="catalog.html"><img src="images/id1_bg.jpg" alt=""></a></div>
+	            <div class="swiper-slide"><a href="catalog.html"><img src="images/id1_bg_2.jpg" alt=""></a></div>
+	        </div>
+	        <!-- Add Pagination  
+	        <div class="swiper-pagination"></div>-->
+	    </div><!-- swiper-container -->
+	</div><!-- # catalog -->
+
+	<div id="about">
+		<div class="content">
+			<div class="title left">
+				<h2 class="white light fontq">About <br/>Coincidence</h2>
+				<hr/>
+				<h4 class="white light">회 사 소 개</h4>
+			</div>
+			<div class="descript right light">
+				<p class="white">
+				한 인간에게서 나올 수 있는 경험보다<br/>
+				더 넓고 원대한 환경 그리고 시공간과 함께<br/>
+	   		    작업해나가는 ‘코인시던스’<br/><br/>                   
+				우연-coincidence<br/> 
+				작업 과정중에서 우연히 발견한 기법을 기반으로 
+				제작되었던 메이킹 스토리를 담은 로고입니다.<Br/>
+				마블링 테이블을 발견한 과정과 같이 
+				모든 것이 우리의 생각에서 제작되는 것만이 아니라
+				생각 외의 것, 상황이나 환경이 만들어주는 우연성이 개입될 때 
+				개인의 생각을 뛰어넘는 디자인이 탄생된다는 것을 인정하며
+				그것을 모토로 하여 작업하겠다는 의미를 가진 브랜드입니다.
+				<br/><br/> 
+				중후하다가도 가벼운 색감을 이용하여 
+				가대리석이 지닌 가벼움과 실용성을 표현합니다.<Br/>
+				기존 대리석상품에서 한발 더 가까이 다가간
+				대중적 접근을 시작으로 
+				코인시던스는 2016년 테이블 디자인부터 
+				전 퍼니쳐 제품으로 영역을 넓혀가고 있습니다. 
+				</p>
+			</div><!-- descript -->
+		</div><!-- content -->
+	</div><!-- # about -->
+
+	<div id="product" class="clearfix">
+		<ul class="tab">
+			<li class="prd1 left">
+				<a href="javascript:void(0)" class="tablinks" onclick="openPrd(event,'prd1')"><span class="linethrough black bold">Rectagle. L<br/>
+				직사각테이블</span><img src="images/main_prd1.png" alt=""></a>
+			</li>
+			<li class="prd2 right">
+				<a href="javascript:void(0)" class="tablinks" onclick="openPrd(event,'prd2')"><span class="linethrough black bold">Round. L<br/>
+				라운드테이블</span><img src="images/main_prd2.png" alt=""></a>
+			</li>
+			<li class="prd3 left">
+				<a href="javascript:void(0)" class="tablinks" onclick="openPrd(event,'prd3')"><span class="linethrough black bold">Round. M<br/>
+				커피테이블</span><img src="images/main_prd3.png" alt=""></a>
+			</li>
+			<li class="prd4 right">
+				<a href="javascript:void(0)" class="tablinks" onclick="openPrd(event,'prd4')"><span class="linethrough black bold">Round. S<br/>스툴의자</span>
+				<img src="images/main_prd4.png" alt=""></a>
+			</li>
+			<li class="prd5 left">
+				<a href="javascript:void(0)" class="tablinks" onclick="openPrd(event,'prd5')"><span class="linethrough black bold">Rectagle. XL<br/>직사각테이블</span>
+				<img src="images/main_prd5.png" alt=""></a>
+			</li>
+		</ul><!-- ul.tab -->
+
+		<div id="Black">
+			<div id="Main">
+				<div id="prd1" class="tabcontent">
+					<p>Rectangle.L 직사각형 (1400*1000*1100)<span>Ivory/OceanBlue/Mars/Green/Wine/Navy/Mono</span></p>
+					<ul>
+						<li><img src="images/rectangle_large_1.png"></li>
+						<li><img src="images/rectangle_large_2.png"></li>
+						<li><img src="images/rectangle_large_3.png"></li>
+						<li><img src="images/rectangle_large_4.png"></li>
+						<li><img src="images/rectangle_large_5.png"></li>
+						<li><img src="images/rectangle_large_6.png"></li>
+						<li><img src="images/rectangle_large_7.png"></li>
+						<li><img src="images/rectangle_large_8.png"></li>
+						
+					</ul>
+				</div>
+				<div id="prd2" class="tabcontent">
+					<p>Round.L 원형 (1300*1300*600)<span>Purple/Mars/SkyBlue/Wine/Mono</span></p>
+					<ul>
+						<li><img src="images/round_large_1.png"></li>
+						<li><img src="images/round_large_2.png"></li>
+						<li><img src="images/round_large_3.png"></li>
+						<li><img src="images/round_large_4.png"></li>
+						<li><img src="images/round_large_5.png"></li>
+						
+					</ul>
+				</div>
+				<div id="prd3" class="tabcontent">
+					<p>Round.M 원형 (800*800*600)<span>Mono/Mars/DipBlue/SkyBlue/Red</span></p>
+					<ul>
+						<li><img src="images/round_med_1.png"></li>
+						<li><img src="images/round_med_2.png"></li>
+						<li><img src="images/round_med_3.png"></li>
+						<li><img src="images/round_med_4.png"></li>
+						<li><img src="images/round_med_5.png"></li>
+						
+					</ul>
+				</div>
+				<div id="prd4" class="tabcontent">
+					<p>Round.S 스툴 (500*500*800)<span>Mono/SkyBlue/Purple/Mars/Green/Wine</span></p>
+					<ul>
+						<li><img src="images/round_small_1.png"></li>
+						<li><img src="images/round_small_2.png"></li>
+						<li><img src="images/round_small_3.png"></li>
+						<li><img src="images/round_small_4.png"></li>
+						<li><img src="images/round_small_5.png"></li>
+						<li><img src="images/round_small_6.png"></li>
+						
+					</ul>
+				</div>
+				<div id="prd5" class="tabcontent">
+					<p>Rectangle.XL 직사각형 (1800*900*1100)<span>OceanBlue/Mars/Purple/Yellow</span></p>
+					<ul>
+						<li><img src="images/rectangle_xl_1.png"></li>
+						<li><img src="images/rectangle_xl_2.png"></li>
+						<li><img src="images/rectangle_xl_3.png"></li>
+						<li><img src="images/rectangle_xl_4.png"></li>
+						
+					</ul>
+				</div>
+			</div><!-- Main -->
+		</div><!-- black -->
+
+	</div><!-- # product -->
+<script>
+function openPrd(evt, prdName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(prdName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+</script>
+
+	<div id="store">
+		<div class="title">
+			<h2 class="light fontq">Stores</h2>
+			<hr/>
+			<h4 class="light">매 장 안 내</h4>
+		</div><!-- title -->
+		<div class="content clearfix">
+			<ul class="storelist">
+				<li class="con1"><a href="images/store_1.jpg">Seoul.강남<br/>롯데백화점</a></li>
+				<li class="con2"><a href="images/store_2.jpg">Seoul.강남<br/>신세계백화점</a></li>
+				<li class="con3"><a href="images/store_3.jpg">Seoul.압구정<br/>갤러리아</a></li>
+				<li class="con4"><a href="images/store_5.jpg">Kyoungi.분당 <br/>롯데백화점</a></li>
+				<li class="con5"><a href="images/store_6.jpg">Kyoungi.수원 <br/>갤러리아</a></li>
+			</ul>
+			<div id="view" class="right">
+				<p id="close"></p>
+				<img id="largeImg" src="awesome-modern-living-room-interior-design-with-grey-marble-coffee-tables-and-velvet-sectional-sofas-added-sweet-desk-lamps-as-well-a_hidden-rooms-interior-design_interior-design_what-is-interior-desi.jpg" alt="store_view"/>
+				<div class="address">
+				<div class="con1">
+					<p class="bold">서울특별시 중구 남대문로 81 3F</p>
+					<p class="fontq">3F.81.Namdaemoon-ro.Joong-gu.Seoul</p>
+					<P>02-771-2500</P>
+					<P>주중 10:30 am - 20:00 pm</P>
+				</div>
+				<div class="con2">
+					<p class="bold">서울특별시 중구 소공로 63 5F</p>
+					<p class="fontq">5F.63.Sogong-ro.Joong-gu.Seoul</p>
+					<P>02-3479-6197</P>
+					<P>주중 10:30 am - 20:00 pm</P>
+				</div>
+				<div class="con3">
+					<p class="bold">서울특별시 강남구 압구정로 343 WEST</p>
+					<p class="fontq">WEST.343.Apgujung-ro.Gangnam-gu.Seoul</p>
+					<P>02-3449-4114</P>
+					<P>주중 10:30 am - 20:00 pm</P>
+				</div>
+				<div class="con4">
+					<p class="bold">경기도 성남시 분당구 수내1동 황새울로200번길 45</p>
+					<p class="fontq">5F.45.Hwangsaewool-ro.Sunae1-dong.Bundang-gu.Seongnam-si.Kyoungi-do</p>
+					<P>031-738-2500</P>
+					<P>주중 10:30 am - 20:00 pm</P>
+				</div>
+				<div class="con5">
+					<p class="bold">경기도 수원시 팔달구 효원로 282 3F</p>
+					<p class="fontq">3F.282.Hyowon-ro.Paldal-gu.Soowon-si.Kyoungi-do</p>
+					<P>031-232-7114</P>
+					<P>주중 10:30 am - 20:00 pm</P>
+				</div>
+				</div>
+			</div>
+			<div id="map">
+			<iframe src="https://www.google.com/maps/d/embed?mid=1-cxkCQjncKRqzhYDoA_vsRVibx8&hl=ko"  frameborder="0" style="border:0" allowfullscreen></iframe>
+				<!-- google_map -->
+			</div>		    
+		</div><!-- content -->
+	</div><!-- #store -->
+
+	<div id="contact" class="clearfix">	
+		<div class="info left">					
+			<div class="title">
+				<h2 class="light fontq">Contact us</h2>
+				<hr/>
+				<h4 class="light">문 의 안 내</h4>
+			</div><!-- title -->
+			
+			<div class="content">			
+				<p>info@coincidence.com</p>
+
+				<p>서울특별시 중구 회현동 2가 99<br/>아이른상가 3층 08호<br/>02.9787.0012</p>
+				
+				<p>308# 3F<br/>Ailon-building. Hoihyun-dong 2ga<br/>Joong-gu. Seoul<br/>Republic of Korea<br/>+82 02.9787.0012</p>
+				
+				<p class="fontq">
+					<img src="images/blog.png" alt="blog" class="icon">
+					<img src="images/face.png" alt="facebook" class="icon">
+					<img src="images/youtube.png" alt="youtube" class="icon">
+				</p>
+			</div><!-- content -->
+		</div><!-- info -->
+		<div class="write right">
+			<p class="clip"><img src="images/clip.png"></p>
+			<ul>
+				<li><input type="text" name="" placeholder="name 작성자 성함" focus></li>
+				<li><input type="text" name="" placeholder="phone 연락처"></li>
+				<li><input type="text" name="" placeholder="email 이메일주소"></li>
+				<li><input type="text" name="" placeholder="subject 제목"></li>
+				<li><textarea placeholder="content 내용"></textarea></li>
+				<li><input type="file" name="files[]" id="filer_input2" multiple="multiple" ></li>
+                <li>
+	                <input type="submit" name="buttons" value="send" class="fontq">
+	                <input type="submit" name="buttons" value="save" class="fontq">
+                </li>
+			</ul>
+		</div><!-- write -->
+	</div><!-- # contact -->
+
+</div> <!-- section_wrap -->
+
+<footer>
+	<hr/>
+		<p class="fontq light">2017&copy;Coincidence All rights reserved</p>
+	<hr/>
+</footer>
+</body>
+</html>
